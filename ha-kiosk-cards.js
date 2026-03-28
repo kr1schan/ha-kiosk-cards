@@ -1,3 +1,202 @@
+// ═══════════════════════════════════════════
+// clock-date-card
+// ═══════════════════════════════════════════
+
+class ClockDateCard extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._timer = null;
+  }
+
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          padding: 48px 0;
+          background: var(--primary-background-color, #111);
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          overflow: hidden;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+
+        .weekday {
+          font-size: 36px;
+          font-weight: 400;
+          letter-spacing: 6px;
+          text-transform: uppercase;
+          color: var(--disabled-text-color, #555);
+          margin-bottom: 12px;
+        }
+
+        .time {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          font-size: 120px;
+          font-weight: 100;
+          line-height: 1;
+          font-variant-numeric: tabular-nums;
+          color: var(--primary-text-color, #e1e1e1);
+          letter-spacing: -4px;
+        }
+
+        .colon {
+          font-size: 120px;
+          margin: 0 4px;
+          color: var(--divider-color, #444);
+          line-height: 1;
+          margin-bottom: 0.15em;
+        }
+
+        .date {
+          font-size: 36px;
+          font-weight: 300;
+          letter-spacing: 3px;
+          color: var(--secondary-text-color, #888);
+          text-transform: uppercase;
+          margin-top: 12px;
+        }
+      </style>
+
+      <div class="weekday"></div>
+      <div class="time">
+        <span class="hours">00</span>
+        <span class="colon">:</span>
+        <span class="minutes">00</span>
+      </div>
+      <div class="date"></div>
+    `;
+
+    this._tick();
+    const offset = 1000 - (new Date().getMilliseconds());
+    setTimeout(() => {
+      this._tick();
+      this._timer = setInterval(() => this._tick(), 1000);
+    }, offset);
+  }
+
+  disconnectedCallback() {
+    if (this._timer) clearInterval(this._timer);
+  }
+
+  _tick() {
+    const WEEKDAYS = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+    const MONTHS   = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+    const pad = n => String(n).padStart(2, "0");
+    const now = new Date();
+
+    this.shadowRoot.querySelector(".hours").textContent   = pad(now.getHours());
+    this.shadowRoot.querySelector(".minutes").textContent = pad(now.getMinutes());
+    this.shadowRoot.querySelector(".date").textContent    =
+      `${now.getDate()}. ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+    this.shadowRoot.querySelector(".weekday").textContent = WEEKDAYS[now.getDay()];
+  }
+
+  setConfig(_config) {}
+
+  static getStubConfig() {
+    return {};
+  }
+}
+
+customElements.define("clock-date-card", ClockDateCard);
+
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "clock-date-card",
+  name: "Clock & Date Card",
+  description: "Uhrzeit und Datum",
+});
+
+
+// ═══════════════════════════════════════════
+// school-day-card
+// ═══════════════════════════════════════════
+
+// ── NRW Schulferien 2025–2028 ──
+const SCHOOL_HOLIDAYS = [
+  { name: "Osterferien",       start: "2025-04-14", end: "2025-04-26" },
+  { name: "Pfingstferien",     start: "2025-06-10", end: "2025-06-10" },
+  { name: "Sommerferien",      start: "2025-07-14", end: "2025-08-26" },
+  { name: "Herbstferien",      start: "2025-10-13", end: "2025-10-25" },
+  { name: "Weihnachtsferien",  start: "2025-12-22", end: "2026-01-06" },
+
+  { name: "Osterferien",       start: "2026-03-30", end: "2026-04-11" },
+  { name: "Pfingstferien",     start: "2026-05-26", end: "2026-05-26" },
+  { name: "Sommerferien",      start: "2026-07-20", end: "2026-09-01" },
+  { name: "Herbstferien",      start: "2026-10-17", end: "2026-10-31" },
+  { name: "Weihnachtsferien",  start: "2026-12-23", end: "2027-01-06" },
+
+  { name: "Osterferien",       start: "2027-03-22", end: "2027-04-03" },
+  { name: "Pfingstferien",     start: "2027-05-18", end: "2027-05-18" },
+  { name: "Sommerferien",      start: "2027-07-19", end: "2027-08-31" },
+  { name: "Herbstferien",      start: "2027-10-23", end: "2027-11-06" },
+  { name: "Weihnachtsferien",  start: "2027-12-24", end: "2028-01-08" },
+
+  { name: "Osterferien",       start: "2028-04-10", end: "2028-04-22" },
+  { name: "Sommerferien",      start: "2028-07-10", end: "2028-08-22" },
+  { name: "Herbstferien",      start: "2028-10-23", end: "2028-11-04" },
+  { name: "Weihnachtsferien",  start: "2028-12-21", end: "2029-01-05" },
+];
+
+// ── Gesetzliche Feiertage NRW 2025–2028 ──
+const PUBLIC_HOLIDAYS = [
+  { name: "Neujahr",                  date: "2025-01-01" },
+  { name: "Karfreitag",               date: "2025-04-18" },
+  { name: "Ostermontag",              date: "2025-04-21" },
+  { name: "Tag der Arbeit",           date: "2025-05-01" },
+  { name: "Christi Himmelfahrt",      date: "2025-05-29" },
+  { name: "Pfingstmontag",            date: "2025-06-09" },
+  { name: "Fronleichnam",             date: "2025-06-19" },
+  { name: "Tag der Deutschen Einheit",date: "2025-10-03" },
+  { name: "Allerheiligen",            date: "2025-11-01" },
+  { name: "1. Weihnachtstag",         date: "2025-12-25" },
+  { name: "2. Weihnachtstag",         date: "2025-12-26" },
+
+  { name: "Neujahr",                  date: "2026-01-01" },
+  { name: "Karfreitag",               date: "2026-04-03" },
+  { name: "Ostermontag",              date: "2026-04-06" },
+  { name: "Tag der Arbeit",           date: "2026-05-01" },
+  { name: "Christi Himmelfahrt",      date: "2026-05-14" },
+  { name: "Pfingstmontag",            date: "2026-05-25" },
+  { name: "Fronleichnam",             date: "2026-06-04" },
+  { name: "Tag der Deutschen Einheit",date: "2026-10-03" },
+  { name: "Allerheiligen",            date: "2026-11-01" },
+  { name: "1. Weihnachtstag",         date: "2026-12-25" },
+  { name: "2. Weihnachtstag",         date: "2026-12-26" },
+
+  { name: "Neujahr",                  date: "2027-01-01" },
+  { name: "Karfreitag",               date: "2027-03-26" },
+  { name: "Ostermontag",              date: "2027-03-29" },
+  { name: "Tag der Arbeit",           date: "2027-05-01" },
+  { name: "Christi Himmelfahrt",      date: "2027-05-06" },
+  { name: "Pfingstmontag",            date: "2027-05-17" },
+  { name: "Fronleichnam",             date: "2027-05-27" },
+  { name: "Tag der Deutschen Einheit",date: "2027-10-03" },
+  { name: "Allerheiligen",            date: "2027-11-01" },
+  { name: "1. Weihnachtstag",         date: "2027-12-25" },
+  { name: "2. Weihnachtstag",         date: "2027-12-26" },
+
+  { name: "Neujahr",                  date: "2028-01-01" },
+  { name: "Karfreitag",               date: "2028-04-14" },
+  { name: "Ostermontag",              date: "2028-04-17" },
+  { name: "Tag der Arbeit",           date: "2028-05-01" },
+  { name: "Christi Himmelfahrt",      date: "2028-05-25" },
+  { name: "Pfingstmontag",            date: "2028-06-05" },
+  { name: "Fronleichnam",             date: "2028-06-15" },
+  { name: "Tag der Deutschen Einheit",date: "2028-10-03" },
+  { name: "Allerheiligen",            date: "2028-11-01" },
+  { name: "1. Weihnachtstag",         date: "2028-12-25" },
+  { name: "2. Weihnachtstag",         date: "2028-12-26" },
+];
+
 class SchoolDayCard extends HTMLElement {
   constructor() {
     super();
@@ -263,86 +462,8 @@ class SchoolDayCard extends HTMLElement {
   }
 }
 
-// ── NRW Schulferien 2025–2028 ──
-const SCHOOL_HOLIDAYS = [
-  { name: "Osterferien",       start: "2025-04-14", end: "2025-04-26" },
-  { name: "Pfingstferien",     start: "2025-06-10", end: "2025-06-10" },
-  { name: "Sommerferien",      start: "2025-07-14", end: "2025-08-26" },
-  { name: "Herbstferien",      start: "2025-10-13", end: "2025-10-25" },
-  { name: "Weihnachtsferien",  start: "2025-12-22", end: "2026-01-06" },
-
-  { name: "Osterferien",       start: "2026-03-30", end: "2026-04-11" },
-  { name: "Pfingstferien",     start: "2026-05-26", end: "2026-05-26" },
-  { name: "Sommerferien",      start: "2026-07-20", end: "2026-09-01" },
-  { name: "Herbstferien",      start: "2026-10-17", end: "2026-10-31" },
-  { name: "Weihnachtsferien",  start: "2026-12-23", end: "2027-01-06" },
-
-  { name: "Osterferien",       start: "2027-03-22", end: "2027-04-03" },
-  { name: "Pfingstferien",     start: "2027-05-18", end: "2027-05-18" },
-  { name: "Sommerferien",      start: "2027-07-19", end: "2027-08-31" },
-  { name: "Herbstferien",      start: "2027-10-23", end: "2027-11-06" },
-  { name: "Weihnachtsferien",  start: "2027-12-24", end: "2028-01-08" },
-
-  { name: "Osterferien",       start: "2028-04-10", end: "2028-04-22" },
-  { name: "Sommerferien",      start: "2028-07-10", end: "2028-08-22" },
-  { name: "Herbstferien",      start: "2028-10-23", end: "2028-11-04" },
-  { name: "Weihnachtsferien",  start: "2028-12-21", end: "2029-01-05" },
-];
-
-// ── Gesetzliche Feiertage NRW 2025–2028 ──
-const PUBLIC_HOLIDAYS = [
-  { name: "Neujahr",                  date: "2025-01-01" },
-  { name: "Karfreitag",               date: "2025-04-18" },
-  { name: "Ostermontag",              date: "2025-04-21" },
-  { name: "Tag der Arbeit",           date: "2025-05-01" },
-  { name: "Christi Himmelfahrt",      date: "2025-05-29" },
-  { name: "Pfingstmontag",            date: "2025-06-09" },
-  { name: "Fronleichnam",             date: "2025-06-19" },
-  { name: "Tag der Deutschen Einheit",date: "2025-10-03" },
-  { name: "Allerheiligen",            date: "2025-11-01" },
-  { name: "1. Weihnachtstag",         date: "2025-12-25" },
-  { name: "2. Weihnachtstag",         date: "2025-12-26" },
-
-  { name: "Neujahr",                  date: "2026-01-01" },
-  { name: "Karfreitag",               date: "2026-04-03" },
-  { name: "Ostermontag",              date: "2026-04-06" },
-  { name: "Tag der Arbeit",           date: "2026-05-01" },
-  { name: "Christi Himmelfahrt",      date: "2026-05-14" },
-  { name: "Pfingstmontag",            date: "2026-05-25" },
-  { name: "Fronleichnam",             date: "2026-06-04" },
-  { name: "Tag der Deutschen Einheit",date: "2026-10-03" },
-  { name: "Allerheiligen",            date: "2026-11-01" },
-  { name: "1. Weihnachtstag",         date: "2026-12-25" },
-  { name: "2. Weihnachtstag",         date: "2026-12-26" },
-
-  { name: "Neujahr",                  date: "2027-01-01" },
-  { name: "Karfreitag",               date: "2027-03-26" },
-  { name: "Ostermontag",              date: "2027-03-29" },
-  { name: "Tag der Arbeit",           date: "2027-05-01" },
-  { name: "Christi Himmelfahrt",      date: "2027-05-06" },
-  { name: "Pfingstmontag",            date: "2027-05-17" },
-  { name: "Fronleichnam",             date: "2027-05-27" },
-  { name: "Tag der Deutschen Einheit",date: "2027-10-03" },
-  { name: "Allerheiligen",            date: "2027-11-01" },
-  { name: "1. Weihnachtstag",         date: "2027-12-25" },
-  { name: "2. Weihnachtstag",         date: "2027-12-26" },
-
-  { name: "Neujahr",                  date: "2028-01-01" },
-  { name: "Karfreitag",               date: "2028-04-14" },
-  { name: "Ostermontag",              date: "2028-04-17" },
-  { name: "Tag der Arbeit",           date: "2028-05-01" },
-  { name: "Christi Himmelfahrt",      date: "2028-05-25" },
-  { name: "Pfingstmontag",            date: "2028-06-05" },
-  { name: "Fronleichnam",             date: "2028-06-15" },
-  { name: "Tag der Deutschen Einheit",date: "2028-10-03" },
-  { name: "Allerheiligen",            date: "2028-11-01" },
-  { name: "1. Weihnachtstag",         date: "2028-12-25" },
-  { name: "2. Weihnachtstag",         date: "2028-12-26" },
-];
-
 customElements.define("school-day-card", SchoolDayCard);
 
-window.customCards = window.customCards || [];
 window.customCards.push({
   type: "school-day-card",
   name: "School Day Card",

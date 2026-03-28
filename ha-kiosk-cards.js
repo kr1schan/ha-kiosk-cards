@@ -500,10 +500,10 @@ const WEATHER_SVGS = {
     <line x1="100" y1="152" x2="100" y2="170"/>
     <line x1="48" y1="100" x2="30" y2="100"/>
     <line x1="152" y1="100" x2="170" y2="100"/>
-    <line x1="63" y1="63" x2="51" y2="51"/>
-    <line x1="137" y1="137" x2="149" y2="149"/>
-    <line x1="137" y1="63" x2="149" y2="51"/>
-    <line x1="63" y1="137" x2="51" y2="149"/>
+    <line x1="63" y1="63" x2="44" y2="44"/>
+    <line x1="137" y1="137" x2="156" y2="156"/>
+    <line x1="137" y1="63" x2="156" y2="44"/>
+    <line x1="63" y1="137" x2="44" y2="156"/>
   </svg>`,
   "clear-night": `<svg viewBox="0 0 200 200" fill="none" stroke="#B0C4DE" stroke-width="6" stroke-linecap="round">
     <path d="M120 50 A50 50 0 1 0 150 120 A38 38 0 1 1 120 50"/>
@@ -590,10 +590,10 @@ class WeatherCard extends HTMLElement {
         :host {
           display: flex;
           flex-direction: column;
-          align-items: center;
+          align-items: flex-end;
           justify-content: center;
           width: 100%;
-          padding: 8px 0;
+          padding: 8px 20px 8px 0;
           background: var(--primary-background-color, #111);
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
@@ -680,6 +680,48 @@ class WeatherCard extends HTMLElement {
       const low = Math.round(today.templow || today.temperature || 0);
       const high = Math.round(today.temperature || 0);
       this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
+    } else if (!this._forecastLoaded) {
+      this._loadForecast();
+    }
+  }
+
+  async _loadForecast() {
+    this._forecastLoaded = true;
+    try {
+      const result = await this._hass.callWS({
+        type: "weather/subscribe_forecast",
+        entity_id: this._config.entity,
+        forecast_type: "daily",
+      });
+      if (result && result.forecast && result.forecast.length > 0) {
+        const today = result.forecast[0];
+        const low = Math.round(today.templow || today.temperature || 0);
+        const high = Math.round(today.temperature || 0);
+        if (this.shadowRoot?.querySelector(".forecast")) {
+          this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
+        }
+      }
+    } catch (e) {
+      // try service call fallback
+      try {
+        const result = await this._hass.callService("weather", "get_forecasts", {
+          entity_id: this._config.entity,
+          type: "daily",
+        }, {}, false, true);
+        if (result) {
+          const forecasts = result[this._config.entity]?.forecast;
+          if (forecasts && forecasts.length > 0) {
+            const today = forecasts[0];
+            const low = Math.round(today.templow || today.temperature || 0);
+            const high = Math.round(today.temperature || 0);
+            if (this.shadowRoot?.querySelector(".forecast")) {
+              this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
+            }
+          }
+        }
+      } catch (e2) {
+        // forecast not available
+      }
     }
   }
 

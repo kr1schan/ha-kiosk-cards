@@ -658,7 +658,7 @@ class WeatherCard extends HTMLElement {
   }
 
   _update() {
-    if (!this.shadowRoot || !this._hass || !this._config.entity) return;
+    if (!this.shadowRoot?.querySelector(".temp") || !this._hass || !this._config.entity) return;
 
     const entity = this._hass.states[this._config.entity];
     if (!entity) return;
@@ -680,27 +680,6 @@ class WeatherCard extends HTMLElement {
       const low = Math.round(today.templow || today.temperature || 0);
       const high = Math.round(today.temperature || 0);
       this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
-    } else {
-      this._loadForecast();
-    }
-  }
-
-  async _loadForecast() {
-    if (!this._hass || !this._config.entity) return;
-    try {
-      const result = await this._hass.callWS({
-        type: "weather/subscribe_forecast",
-        entity_id: this._config.entity,
-        forecast_type: "daily",
-      });
-      if (result && result.forecast && result.forecast.length > 0) {
-        const today = result.forecast[0];
-        const low = Math.round(today.templow || today.temperature || 0);
-        const high = Math.round(today.temperature || 0);
-        this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
-      }
-    } catch (e) {
-      // forecast not available
     }
   }
 

@@ -18,7 +18,7 @@ class ClockDateCard extends HTMLElement {
           align-items: center;
           justify-content: center;
           width: 100%;
-          padding: 48px 0;
+          padding: 8px 0;
           background: var(--primary-background-color, #111);
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
@@ -213,7 +213,7 @@ class SchoolDayCard extends HTMLElement {
           align-items: center;
           justify-content: center;
           width: 100%;
-          padding: 48px 0;
+          padding: 8px 0;
           background: var(--primary-background-color, #111);
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
@@ -234,8 +234,8 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .bg svg {
-          height: 200px;
-          width: 200px;
+          height: 160px;
+          width: 160px;
         }
 
         .status {

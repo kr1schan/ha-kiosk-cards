@@ -469,3 +469,250 @@ window.customCards.push({
   name: "School Day Card",
   description: "Zeigt Schultag/Ferien/Feiertag/Wochenende für NRW",
 });
+
+
+// ═══════════════════════════════════════════
+// weather-card
+// ═══════════════════════════════════════════
+
+const WEATHER_TRANSLATIONS = {
+  "clear-night": "Klare Nacht",
+  "cloudy": "Bewölkt",
+  "fog": "Nebel",
+  "hail": "Hagel",
+  "lightning": "Gewitter",
+  "lightning-rainy": "Gewitter mit Regen",
+  "partlycloudy": "Teilweise bewölkt",
+  "pouring": "Starkregen",
+  "rainy": "Regen",
+  "snowy": "Schnee",
+  "snowy-rainy": "Schneeregen",
+  "sunny": "Sonnig",
+  "windy": "Windig",
+  "windy-variant": "Windig",
+  "exceptional": "Außergewöhnlich",
+};
+
+const WEATHER_SVGS = {
+  "sunny": `<svg viewBox="0 0 200 200" fill="none" stroke="#FF8C00" stroke-width="6" stroke-linecap="round">
+    <circle cx="100" cy="100" r="32"/>
+    <line x1="100" y1="48" x2="100" y2="30"/>
+    <line x1="100" y1="152" x2="100" y2="170"/>
+    <line x1="48" y1="100" x2="30" y2="100"/>
+    <line x1="152" y1="100" x2="170" y2="100"/>
+    <line x1="63" y1="63" x2="51" y2="51"/>
+    <line x1="137" y1="137" x2="149" y2="149"/>
+    <line x1="137" y1="63" x2="149" y2="51"/>
+    <line x1="63" y1="137" x2="51" y2="149"/>
+  </svg>`,
+  "clear-night": `<svg viewBox="0 0 200 200" fill="none" stroke="#B0C4DE" stroke-width="6" stroke-linecap="round">
+    <path d="M120 50 A50 50 0 1 0 150 120 A38 38 0 1 1 120 50"/>
+  </svg>`,
+  "cloudy": `<svg viewBox="0 0 200 200" fill="none" stroke="#A0A0A0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M55 130 A35 35 0 0 1 65 62 A40 40 0 0 1 140 60 A30 30 0 0 1 155 130 Z"/>
+  </svg>`,
+  "partlycloudy": `<svg viewBox="0 0 200 200" fill="none" stroke-width="6" stroke-linecap="round">
+    <circle cx="80" cy="70" r="25" stroke="#FF8C00"/>
+    <line x1="80" y1="30" x2="80" y2="20" stroke="#FF8C00"/>
+    <line x1="80" y1="110" x2="80" y2="100" stroke="#FF8C00"/>
+    <line x1="40" y1="70" x2="30" y2="70" stroke="#FF8C00"/>
+    <line x1="120" y1="70" x2="110" y2="70" stroke="#FF8C00"/>
+    <path d="M60 150 A30 30 0 0 1 68 90 A35 35 0 0 1 145 88 A25 25 0 0 1 155 150 Z" stroke="#A0A0A0"/>
+  </svg>`,
+  "rainy": `<svg viewBox="0 0 200 200" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 110 A30 30 0 0 1 60 52 A35 35 0 0 1 140 50 A25 25 0 0 1 155 110 Z" stroke="#A0A0A0"/>
+    <line x1="75" y1="130" x2="65" y2="155" stroke="#4A8AE6"/>
+    <line x1="105" y1="130" x2="95" y2="155" stroke="#4A8AE6"/>
+    <line x1="135" y1="130" x2="125" y2="155" stroke="#4A8AE6"/>
+  </svg>`,
+  "pouring": `<svg viewBox="0 0 200 200" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 100 A30 30 0 0 1 60 42 A35 35 0 0 1 140 40 A25 25 0 0 1 155 100 Z" stroke="#A0A0A0"/>
+    <line x1="65" y1="120" x2="55" y2="150" stroke="#4A8AE6"/>
+    <line x1="90" y1="120" x2="80" y2="150" stroke="#4A8AE6"/>
+    <line x1="115" y1="120" x2="105" y2="150" stroke="#4A8AE6"/>
+    <line x1="140" y1="120" x2="130" y2="150" stroke="#4A8AE6"/>
+    <line x1="75" y1="155" x2="65" y2="175" stroke="#4A8AE6"/>
+    <line x1="105" y1="155" x2="95" y2="175" stroke="#4A8AE6"/>
+  </svg>`,
+  "snowy": `<svg viewBox="0 0 200 200" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 110 A30 30 0 0 1 60 52 A35 35 0 0 1 140 50 A25 25 0 0 1 155 110 Z" stroke="#A0A0A0"/>
+    <circle cx="75" cy="140" r="4" stroke="#B0C4DE"/>
+    <circle cx="105" cy="145" r="4" stroke="#B0C4DE"/>
+    <circle cx="135" cy="138" r="4" stroke="#B0C4DE"/>
+    <circle cx="90" cy="162" r="4" stroke="#B0C4DE"/>
+    <circle cx="120" cy="165" r="4" stroke="#B0C4DE"/>
+  </svg>`,
+  "lightning": `<svg viewBox="0 0 200 200" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 100 A30 30 0 0 1 60 42 A35 35 0 0 1 140 40 A25 25 0 0 1 155 100 Z" stroke="#A0A0A0"/>
+    <polyline points="105,110 95,140 115,140 100,175" stroke="#FFD700"/>
+  </svg>`,
+  "lightning-rainy": `<svg viewBox="0 0 200 200" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 100 A30 30 0 0 1 60 42 A35 35 0 0 1 140 40 A25 25 0 0 1 155 100 Z" stroke="#A0A0A0"/>
+    <polyline points="105,110 95,140 115,140 100,175" stroke="#FFD700"/>
+    <line x1="65" y1="120" x2="55" y2="145" stroke="#4A8AE6"/>
+    <line x1="145" y1="120" x2="135" y2="145" stroke="#4A8AE6"/>
+  </svg>`,
+  "fog": `<svg viewBox="0 0 200 200" fill="none" stroke="#A0A0A0" stroke-width="6" stroke-linecap="round">
+    <line x1="40" y1="80" x2="160" y2="80"/>
+    <line x1="50" y1="100" x2="150" y2="100"/>
+    <line x1="40" y1="120" x2="160" y2="120"/>
+    <line x1="60" y1="140" x2="140" y2="140"/>
+  </svg>`,
+  "windy": `<svg viewBox="0 0 200 200" fill="none" stroke="#A0A0A0" stroke-width="6" stroke-linecap="round">
+    <path d="M40 80 Q100 80 120 60 A15 15 0 0 1 130 88 L40 88"/>
+    <path d="M40 110 Q120 110 150 90 A15 15 0 0 1 155 118 L40 118"/>
+    <path d="M60 140 Q110 140 125 125 A12 12 0 0 1 130 148 L60 148"/>
+  </svg>`,
+};
+
+class WeatherCard extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._config = {};
+  }
+
+  setConfig(config) {
+    this._config = config;
+    if (!config.entity) {
+      throw new Error("Please define a weather entity");
+    }
+  }
+
+  set hass(hass) {
+    this._hass = hass;
+    this._update();
+  }
+
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          padding: 8px 0;
+          background: var(--primary-background-color, #111);
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          overflow: hidden;
+          user-select: none;
+          -webkit-user-select: none;
+          position: relative;
+        }
+
+        .bg {
+          position: absolute;
+          top: 0;
+          left: 10px;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+          opacity: 0.25;
+          pointer-events: none;
+        }
+
+        .bg svg {
+          height: 200px;
+          width: 200px;
+        }
+
+        .temp {
+          font-size: 80px;
+          font-weight: 100;
+          color: var(--primary-text-color, #e1e1e1);
+          position: relative;
+          z-index: 1;
+          line-height: 1;
+        }
+
+        .condition {
+          font-size: 28px;
+          font-weight: 300;
+          color: var(--secondary-text-color, #888);
+          margin-top: 4px;
+          position: relative;
+          z-index: 1;
+        }
+
+        .forecast {
+          font-size: 22px;
+          font-weight: 400;
+          letter-spacing: 2px;
+          color: var(--disabled-text-color, #555);
+          margin-top: 12px;
+          text-transform: uppercase;
+          position: relative;
+          z-index: 1;
+        }
+      </style>
+
+      <div class="bg"></div>
+      <div class="temp">--°</div>
+      <div class="condition"></div>
+      <div class="forecast"></div>
+    `;
+
+    if (this._hass) this._update();
+  }
+
+  _update() {
+    if (!this.shadowRoot || !this._hass || !this._config.entity) return;
+
+    const entity = this._hass.states[this._config.entity];
+    if (!entity) return;
+
+    const state = entity.state;
+    const attrs = entity.attributes;
+    const temp = Math.round(attrs.temperature || 0);
+    const condition = WEATHER_TRANSLATIONS[state] || state;
+
+    this.shadowRoot.querySelector(".temp").textContent = `${temp}°`;
+    this.shadowRoot.querySelector(".condition").textContent = condition;
+
+    const svgKey = state === "windy-variant" ? "windy" : (state === "snowy-rainy" ? "snowy" : state);
+    this.shadowRoot.querySelector(".bg").innerHTML = WEATHER_SVGS[svgKey] || WEATHER_SVGS["cloudy"];
+
+    // Tagesvorhersage
+    if (attrs.forecast && attrs.forecast.length > 0) {
+      const today = attrs.forecast[0];
+      const low = Math.round(today.templow || today.temperature || 0);
+      const high = Math.round(today.temperature || 0);
+      this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
+    } else {
+      this._loadForecast();
+    }
+  }
+
+  async _loadForecast() {
+    if (!this._hass || !this._config.entity) return;
+    try {
+      const result = await this._hass.callWS({
+        type: "weather/subscribe_forecast",
+        entity_id: this._config.entity,
+        forecast_type: "daily",
+      });
+      if (result && result.forecast && result.forecast.length > 0) {
+        const today = result.forecast[0];
+        const low = Math.round(today.templow || today.temperature || 0);
+        const high = Math.round(today.temperature || 0);
+        this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
+      }
+    } catch (e) {
+      // forecast not available
+    }
+  }
+
+  static getStubConfig() {
+    return { entity: "weather.forecast_home" };
+  }
+}
+
+customElements.define("weather-card", WeatherCard);
+
+window.customCards.push({
+  type: "weather-card",
+  name: "Weather Card",
+  description: "Aktuelles Wetter und Tagesvorhersage",
+});

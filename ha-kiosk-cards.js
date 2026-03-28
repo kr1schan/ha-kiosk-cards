@@ -224,18 +224,18 @@ class SchoolDayCard extends HTMLElement {
 
         .bg {
           position: absolute;
-          top: 50%;
+          top: 0;
           right: 10px;
-          transform: translateY(-50%);
-          width: 140px;
-          height: 140px;
+          bottom: 0;
+          display: flex;
+          align-items: center;
           opacity: 0.25;
           pointer-events: none;
         }
 
         .bg svg {
-          width: 100%;
-          height: 100%;
+          height: 80%;
+          width: auto;
         }
 
         .status {

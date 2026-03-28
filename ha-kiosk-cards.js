@@ -225,10 +225,10 @@ class SchoolDayCard extends HTMLElement {
         .bg {
           position: absolute;
           top: 50%;
-          right: 40px;
+          right: 10px;
           transform: translateY(-50%);
-          width: 280px;
-          height: 280px;
+          width: 140px;
+          height: 140px;
           opacity: 0.25;
           pointer-events: none;
         }

@@ -28,7 +28,7 @@ class ClockDateCard extends HTMLElement {
           letter-spacing: 6px;
           text-transform: uppercase;
           color: var(--disabled-text-color, #555);
-          margin-bottom: 24px;
+          margin-bottom: 12px;
         }
 
         .time {
@@ -57,7 +57,7 @@ class ClockDateCard extends HTMLElement {
           letter-spacing: 3px;
           color: var(--secondary-text-color, #888);
           text-transform: uppercase;
-          margin-top: 24px;
+          margin-top: 12px;
         }
       </style>
 

@@ -14,7 +14,7 @@ class ClockDateCard extends HTMLElement {
           align-items: center;
           justify-content: center;
           width: 100%;
-          height: 100%;
+          padding: 48px 0;
           background: var(--primary-background-color, #111);
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
@@ -35,7 +35,7 @@ class ClockDateCard extends HTMLElement {
           display: flex;
           flex-direction: row;
           align-items: center;
-          font-size: 180px;
+          font-size: 140px;
           font-weight: 100;
           line-height: 1;
           font-variant-numeric: tabular-nums;
@@ -44,7 +44,7 @@ class ClockDateCard extends HTMLElement {
         }
 
         .colon {
-          font-size: 180px;
+          font-size: 140px;
           margin: 0 4px;
           color: var(--divider-color, #444);
           line-height: 1;

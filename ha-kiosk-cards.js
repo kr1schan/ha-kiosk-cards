@@ -296,7 +296,7 @@ class SchoolDayCard extends HTMLElement {
 
   _getSvg(type) {
     const svgs = {
-      schultag: `<svg viewBox="0 0 200 200" fill="none" stroke="#6B9BD2" stroke-width="3" stroke-linecap="round">
+      schultag: `<svg viewBox="0 0 200 200" fill="none" stroke="#4A8AE6" stroke-width="6" stroke-linecap="round">
         <rect x="45" y="30" width="70" height="95" rx="3"/>
         <line x1="58" y1="52" x2="102" y2="52"/>
         <line x1="58" y1="66" x2="102" y2="66"/>
@@ -304,7 +304,7 @@ class SchoolDayCard extends HTMLElement {
         <line x1="130" y1="170" x2="145" y2="50"/>
         <line x1="145" y1="50" x2="152" y2="53"/>
       </svg>`,
-      wochenende: `<svg viewBox="0 0 200 200" fill="none" stroke="#F2A63B" stroke-width="3" stroke-linecap="round">
+      wochenende: `<svg viewBox="0 0 200 200" fill="none" stroke="#FF8C00" stroke-width="6" stroke-linecap="round">
         <circle cx="100" cy="90" r="32"/>
         <line x1="100" y1="48" x2="100" y2="36"/>
         <line x1="100" y1="132" x2="100" y2="144"/>
@@ -315,7 +315,7 @@ class SchoolDayCard extends HTMLElement {
         <line x1="123" y1="67" x2="131" y2="59"/>
         <line x1="77" y1="113" x2="69" y2="121"/>
       </svg>`,
-      ferien: `<svg viewBox="0 0 200 200" fill="none" stroke="#4FC1A6" stroke-width="3" stroke-linecap="round">
+      ferien: `<svg viewBox="0 0 200 200" fill="none" stroke="#2ECC71" stroke-width="6" stroke-linecap="round">
         <path d="M30 150 Q65 130 100 150 Q135 170 170 150"/>
         <path d="M30 165 Q65 145 100 165 Q135 185 170 165"/>
         <line x1="120" y1="145" x2="120" y2="50"/>
@@ -324,7 +324,7 @@ class SchoolDayCard extends HTMLElement {
         <path d="M120 50 Q100 55 90 70 Q102 62 120 65"/>
         <path d="M120 65 Q98 68 92 85 Q105 78 120 80"/>
       </svg>`,
-      feiertag: `<svg viewBox="0 0 200 200" fill="none" stroke="#D4A843" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      feiertag: `<svg viewBox="0 0 200 200" fill="none" stroke="#FFD700" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="100,30 112,72 156,72 120,98 132,140 100,114 68,140 80,98 44,72 88,72"/>
       </svg>`,
     };

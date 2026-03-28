@@ -227,7 +227,8 @@ class SchoolDayCard extends HTMLElement {
           inset: 0;
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-end;
+          padding-right: 40px;
           opacity: 0.25;
           pointer-events: none;
         }
@@ -238,7 +239,7 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .status {
-          font-size: 64px;
+          font-size: 48px;
           font-weight: 200;
           letter-spacing: 2px;
           text-transform: uppercase;
@@ -313,7 +314,6 @@ class SchoolDayCard extends HTMLElement {
         <line x1="123" y1="113" x2="131" y2="121"/>
         <line x1="123" y1="67" x2="131" y2="59"/>
         <line x1="77" y1="113" x2="69" y2="121"/>
-        <line x1="40" y1="160" x2="160" y2="160"/>
       </svg>`,
       ferien: `<svg viewBox="0 0 200 200" fill="none" stroke="#4FC1A6" stroke-width="3" stroke-linecap="round">
         <path d="M30 150 Q65 130 100 150 Q135 170 170 150"/>

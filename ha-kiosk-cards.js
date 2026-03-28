@@ -234,8 +234,8 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .bg svg {
-          height: 160px;
-          width: 160px;
+          height: 100%;
+          width: auto;
         }
 
         .status {

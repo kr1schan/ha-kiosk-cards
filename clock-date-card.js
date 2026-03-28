@@ -28,14 +28,14 @@ class ClockDateCard extends HTMLElement {
           letter-spacing: 6px;
           text-transform: uppercase;
           color: var(--disabled-text-color, #555);
-          margin-bottom: 48px;
+          margin-bottom: 24px;
         }
 
         .time {
           display: flex;
           flex-direction: row;
           align-items: center;
-          font-size: 140px;
+          font-size: 120px;
           font-weight: 100;
           line-height: 1;
           font-variant-numeric: tabular-nums;
@@ -44,7 +44,7 @@ class ClockDateCard extends HTMLElement {
         }
 
         .colon {
-          font-size: 140px;
+          font-size: 120px;
           margin: 0 4px;
           color: var(--divider-color, #444);
           line-height: 1;
@@ -57,7 +57,7 @@ class ClockDateCard extends HTMLElement {
           letter-spacing: 3px;
           color: var(--secondary-text-color, #888);
           text-transform: uppercase;
-          margin-top: 48px;
+          margin-top: 24px;
         }
       </style>
 

@@ -12,14 +12,13 @@ class ClockDateCard extends HTMLElement {
   connectedCallback() {
     this.shadowRoot.innerHTML = `
       <style>
-        :host {
+        ha-card {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          width: 100%;
           padding: 8px 0;
-          background: var(--primary-background-color, #111);
+          background: var(--card-background-color, var(--primary-background-color, #111));
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
           user-select: none;
@@ -65,13 +64,15 @@ class ClockDateCard extends HTMLElement {
         }
       </style>
 
-      <div class="weekday"></div>
-      <div class="time">
-        <span class="hours">00</span>
-        <span class="colon">:</span>
-        <span class="minutes">00</span>
-      </div>
-      <div class="date"></div>
+      <ha-card>
+        <div class="weekday"></div>
+        <div class="time">
+          <span class="hours">00</span>
+          <span class="colon">:</span>
+          <span class="minutes">00</span>
+        </div>
+        <div class="date"></div>
+      </ha-card>
     `;
 
     this._tick();
@@ -207,14 +208,13 @@ class SchoolDayCard extends HTMLElement {
   connectedCallback() {
     this.shadowRoot.innerHTML = `
       <style>
-        :host {
+        ha-card {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          width: 100%;
           padding: 8px 0;
-          background: var(--primary-background-color, #111);
+          background: var(--card-background-color, var(--primary-background-color, #111));
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
           user-select: none;
@@ -269,10 +269,12 @@ class SchoolDayCard extends HTMLElement {
         }
       </style>
 
-      <div class="bg"></div>
-      <div class="status"></div>
-      <div class="detail"></div>
-      <div class="countdown"></div>
+      <ha-card>
+        <div class="bg"></div>
+        <div class="status"></div>
+        <div class="detail"></div>
+        <div class="countdown"></div>
+      </ha-card>
     `;
 
     this._update();
@@ -513,10 +515,14 @@ const WEATHER_SVGS = {
   </svg>`,
   "partlycloudy": `<svg viewBox="0 0 200 200" fill="none" stroke-width="6" stroke-linecap="round">
     <circle cx="80" cy="70" r="25" stroke="#FF8C00"/>
-    <line x1="80" y1="30" x2="80" y2="20" stroke="#FF8C00"/>
-    <line x1="80" y1="110" x2="80" y2="100" stroke="#FF8C00"/>
-    <line x1="40" y1="70" x2="30" y2="70" stroke="#FF8C00"/>
-    <line x1="120" y1="70" x2="110" y2="70" stroke="#FF8C00"/>
+    <line x1="80" y1="35" x2="80" y2="18" stroke="#FF8C00"/>
+    <line x1="80" y1="105" x2="80" y2="122" stroke="#FF8C00"/>
+    <line x1="45" y1="70" x2="28" y2="70" stroke="#FF8C00"/>
+    <line x1="115" y1="70" x2="132" y2="70" stroke="#FF8C00"/>
+    <line x1="62" y1="52" x2="50" y2="40" stroke="#FF8C00"/>
+    <line x1="98" y1="88" x2="110" y2="100" stroke="#FF8C00"/>
+    <line x1="98" y1="52" x2="110" y2="40" stroke="#FF8C00"/>
+    <line x1="62" y1="88" x2="50" y2="100" stroke="#FF8C00"/>
     <path d="M60 150 A30 30 0 0 1 68 90 A35 35 0 0 1 145 88 A25 25 0 0 1 155 150 Z" stroke="#A0A0A0"/>
   </svg>`,
   "rainy": `<svg viewBox="0 0 200 200" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
@@ -587,14 +593,13 @@ class WeatherCard extends HTMLElement {
   connectedCallback() {
     this.shadowRoot.innerHTML = `
       <style>
-        :host {
+        ha-card {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
           justify-content: center;
-          width: 100%;
           padding: 8px 20px 8px 0;
-          background: var(--primary-background-color, #111);
+          background: var(--card-background-color, var(--primary-background-color, #111));
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
           user-select: none;
@@ -648,10 +653,12 @@ class WeatherCard extends HTMLElement {
         }
       </style>
 
-      <div class="bg"></div>
-      <div class="temp">--°</div>
-      <div class="condition"></div>
-      <div class="forecast"></div>
+      <ha-card>
+        <div class="bg"></div>
+        <div class="temp">--°</div>
+        <div class="condition"></div>
+        <div class="forecast"></div>
+      </ha-card>
     `;
 
     if (this._hass) this._update();

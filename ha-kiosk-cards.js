@@ -224,11 +224,11 @@ class SchoolDayCard extends HTMLElement {
 
         .bg {
           position: absolute;
-          inset: 0;
+          top: 0;
+          right: 40px;
+          bottom: 0;
           display: flex;
           align-items: center;
-          justify-content: flex-end;
-          padding-right: 40px;
           opacity: 0.25;
           pointer-events: none;
         }
@@ -239,7 +239,7 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .status {
-          font-size: 48px;
+          font-size: 36px;
           font-weight: 200;
           letter-spacing: 2px;
           text-transform: uppercase;

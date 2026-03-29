@@ -651,6 +651,15 @@ class WeatherCard extends HTMLElement {
           position: relative;
           z-index: 1;
         }
+
+        .rain-alert {
+          font-size: 20px;
+          font-weight: 400;
+          color: var(--secondary-text-color, #888);
+          margin-top: 8px;
+          position: relative;
+          z-index: 1;
+        }
       </style>
 
       <ha-card>
@@ -658,6 +667,7 @@ class WeatherCard extends HTMLElement {
         <div class="temp">--°</div>
         <div class="condition"></div>
         <div class="forecast"></div>
+        <div class="rain-alert"></div>
       </ha-card>
     `;
 
@@ -714,6 +724,43 @@ class WeatherCard extends HTMLElement {
       );
     } catch (e) {
       // forecast not available
+    }
+
+    // Stündliche Vorhersage für Regen-Warnung
+    try {
+      this._hass.connection.subscribeMessage(
+        (result) => {
+          const el = this.shadowRoot?.querySelector(".rain-alert");
+          if (!el || !result?.forecast) return;
+
+          const now = new Date();
+          const endOfDay = new Date(now);
+          endOfDay.setHours(23, 59, 59, 999);
+
+          const RAIN_CONDITIONS = ["rainy", "pouring", "lightning-rainy", "lightning", "hail", "snowy", "snowy-rainy"];
+
+          const rainHour = result.forecast.find((h) => {
+            const t = new Date(h.datetime);
+            return t >= now && t <= endOfDay && RAIN_CONDITIONS.includes(h.condition);
+          });
+
+          if (rainHour) {
+            const t = new Date(rainHour.datetime);
+            const hour = t.getHours();
+            const cond = WEATHER_TRANSLATIONS[rainHour.condition] || rainHour.condition;
+            el.textContent = `${cond} ab ${hour} Uhr`;
+          } else {
+            el.textContent = "";
+          }
+        },
+        {
+          type: "weather/subscribe_forecast",
+          forecast_type: "hourly",
+          entity_id: this._config.entity,
+        },
+      );
+    } catch (e) {
+      // hourly forecast not available
     }
   }
 

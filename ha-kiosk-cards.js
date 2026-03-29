@@ -280,9 +280,8 @@ class SchoolDayCard extends HTMLElement {
     today.setHours(0, 0, 0, 0);
     const info = this._getStatus(today);
 
-    this.shadowRoot.querySelector(".status").textContent = info.status;
-    this.shadowRoot.querySelector(".detail").textContent = info.detail;
     this.shadowRoot.querySelector(".countdown").textContent = info.countdown;
+    this.shadowRoot.querySelector(".status").textContent = info.status;
     this.shadowRoot.querySelector(".bg").innerHTML = this._getSvg(info.type);
   }
 

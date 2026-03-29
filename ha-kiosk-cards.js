@@ -238,32 +238,23 @@ class SchoolDayCard extends HTMLElement {
           width: 200px;
         }
 
+        .countdown {
+          font-size: 22px;
+          font-weight: 400;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          color: var(--disabled-text-color, #555);
+          position: relative;
+          z-index: 1;
+        }
+
         .status {
           font-size: 36px;
           font-weight: 200;
           letter-spacing: 2px;
           text-transform: uppercase;
           color: var(--primary-text-color, #e1e1e1);
-          position: relative;
-          z-index: 1;
-        }
-
-        .detail {
-          font-size: 28px;
-          font-weight: 300;
-          color: var(--secondary-text-color, #888);
-          margin-top: 8px;
-          position: relative;
-          z-index: 1;
-        }
-
-        .countdown {
-          font-size: 22px;
-          font-weight: 400;
-          letter-spacing: 2px;
-          color: var(--disabled-text-color, #555);
-          margin-top: 16px;
-          text-transform: uppercase;
+          margin-top: 4px;
           position: relative;
           z-index: 1;
         }
@@ -271,9 +262,8 @@ class SchoolDayCard extends HTMLElement {
 
       <ha-card>
         <div class="bg"></div>
-        <div class="status"></div>
-        <div class="detail"></div>
         <div class="countdown"></div>
+        <div class="status"></div>
       </ha-card>
     `;
 
@@ -342,7 +332,7 @@ class SchoolDayCard extends HTMLElement {
         type: "ferien",
         status: holiday,
         detail: "",
-        countdown: days <= 1 ? "Morgen wieder Schule" : `Noch ${days} Tage Ferien`,
+        countdown: days <= 1 ? "Noch ein Tag" : `Noch ${days} Tage`,
       };
     }
 
@@ -354,7 +344,7 @@ class SchoolDayCard extends HTMLElement {
         type: "feiertag",
         status: publicHoliday,
         detail: "",
-        countdown: days <= 1 ? "Morgen wieder Schule" : `Noch ${days} Tage frei`,
+        countdown: days <= 1 ? "Noch ein Tag" : `Noch ${days} Tage`,
       };
     }
 
@@ -374,7 +364,7 @@ class SchoolDayCard extends HTMLElement {
           type: "ferien",
           status: adjacentHoliday,
           detail: "",
-          countdown: days <= 1 ? "Morgen wieder Schule" : `Noch ${days} Tage Ferien`,
+          countdown: days <= 1 ? "Noch ein Tag" : `Noch ${days} Tage`,
         };
       }
 
@@ -384,7 +374,7 @@ class SchoolDayCard extends HTMLElement {
         type: "wochenende",
         status: "Wochenende",
         detail: "",
-        countdown: days <= 1 ? "Morgen wieder Schule" : `Noch ${days} Tage frei`,
+        countdown: days <= 1 ? "Noch ein Tag" : `Noch ${days} Tage`,
       };
     }
 

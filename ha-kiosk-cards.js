@@ -1144,7 +1144,7 @@ class TramCard extends HTMLElement {
         const delayStr = d.delay > 0 ? ` +${d.delay}` : "";
         return `
           <div class="departure">
-            <span class="line">${d.line} → 🏙️</span>
+            <span class="line">${d.line}</span>
             <span class="minutes ${cls}">${d.mins}${delayStr} <span class="unit">min</span></span>
           </div>
         `;

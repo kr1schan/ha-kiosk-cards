@@ -360,6 +360,24 @@ class SchoolDayCard extends HTMLElement {
 
     const dow = today.getDay();
     if (dow === 0 || dow === 6) {
+      // Prüfe ob Wochenende an Ferien grenzt
+      const nextMon = new Date(today);
+      nextMon.setDate(nextMon.getDate() + ((8 - dow) % 7 || 7));
+      const prevFri = new Date(today);
+      prevFri.setDate(prevFri.getDate() - ((dow + 2) % 7 || 7));
+
+      const adjacentHoliday = this._getHoliday(nextMon) || this._getHoliday(prevFri);
+      if (adjacentHoliday) {
+        const nextSchool = this._nextSchoolDay(today);
+        const days = this._daysBetween(today, nextSchool) - 1;
+        return {
+          type: "ferien",
+          status: "Ferien",
+          detail: adjacentHoliday,
+          countdown: days <= 1 ? "Morgen wieder Schule" : `Noch ${days} Tage Ferien`,
+        };
+      }
+
       const nextSchool = this._nextSchoolDay(today);
       const days = this._daysBetween(today, nextSchool) - 1;
       return {

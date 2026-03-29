@@ -984,3 +984,193 @@ window.customCards.push({
   name: "Pollen Card",
   description: "Pollenbelastung Bäume und Gräser",
 });
+
+
+// ═══════════════════════════════════════════
+// tram-card
+// ═══════════════════════════════════════════
+
+class TramCard extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._config = {};
+    this._timer = null;
+  }
+
+  setConfig(config) {
+    if (!config.entity) throw new Error("Please define a sensor entity");
+    this._config = {
+      entity: config.entity,
+      lines: config.lines || ["707", "705"],
+      platform: config.platform || "1",
+      max: config.max || 2,
+    };
+  }
+
+  set hass(hass) {
+    this._hass = hass;
+    this._update();
+  }
+
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        ha-card {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          padding: 16px 20px;
+          gap: 20px;
+          background: var(--card-background-color, var(--primary-background-color, #111));
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          overflow: hidden;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+
+        .tram-icon svg {
+          width: 80px;
+          height: 80px;
+          opacity: 0.5;
+        }
+
+        .departures {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          gap: 8px;
+        }
+
+        .departure {
+          display: flex;
+          flex-direction: row;
+          align-items: baseline;
+          gap: 12px;
+        }
+
+        .line {
+          font-size: 24px;
+          font-weight: 400;
+          color: var(--secondary-text-color, #888);
+          min-width: 50px;
+        }
+
+        .dest {
+          font-size: 20px;
+          font-weight: 300;
+          color: var(--disabled-text-color, #555);
+          flex: 1;
+        }
+
+        .minutes {
+          font-size: 36px;
+          font-weight: 200;
+          color: var(--primary-text-color, #e1e1e1);
+          white-space: nowrap;
+        }
+
+        .minutes .unit {
+          font-size: 20px;
+          font-weight: 300;
+          color: var(--secondary-text-color, #888);
+        }
+
+        .delay {
+          color: #E04040;
+        }
+
+        .empty {
+          font-size: 22px;
+          font-weight: 300;
+          color: var(--disabled-text-color, #555);
+        }
+      </style>
+
+      <ha-card>
+        <div class="tram-icon">${this._tramSvg()}</div>
+        <div class="departures" id="deps"></div>
+      </ha-card>
+    `;
+
+    if (this._hass) this._update();
+    this._timer = setInterval(() => this._update(), 30000);
+  }
+
+  disconnectedCallback() {
+    if (this._timer) clearInterval(this._timer);
+  }
+
+  _update() {
+    if (!this.shadowRoot?.querySelector("#deps") || !this._hass || !this._config.entity) return;
+
+    const entity = this._hass.states[this._config.entity];
+    if (!entity || !entity.attributes.next_departures) return;
+
+    const now = Date.now();
+    const deps = entity.attributes.next_departures
+      .filter((d) => {
+        const lineMatch = this._config.lines.some((l) => d.train && d.train.includes(l));
+        const platMatch = !this._config.platform || d.platform === this._config.platform;
+        const notCancelled = !d.is_cancelled;
+        return lineMatch && platMatch && notCancelled;
+      })
+      .map((d) => {
+        const depTime = d.departure_timestamp ? d.departure_timestamp * 1000 : new Date(d.time).getTime();
+        const mins = Math.max(0, Math.round((depTime - now) / 60000));
+        const line = d.train.replace(/^Tra\s*/, "");
+        return { line, destination: d.destination, mins, delay: d.delay || 0 };
+      })
+      .filter((d) => d.mins >= 0)
+      .slice(0, this._config.max);
+
+    const container = this.shadowRoot.querySelector("#deps");
+    if (deps.length === 0) {
+      container.innerHTML = `<div class="empty">Keine Abfahrten</div>`;
+      return;
+    }
+
+    container.innerHTML = deps
+      .map((d) => {
+        const delayStr = d.delay > 0 ? ` <span class="delay">+${d.delay}</span>` : "";
+        return `
+          <div class="departure">
+            <span class="line">${d.line}</span>
+            <span class="dest">${d.destination}</span>
+            <span class="minutes">${d.mins}${delayStr} <span class="unit">min</span></span>
+          </div>
+        `;
+      })
+      .join("");
+  }
+
+  _tramSvg() {
+    return `<svg viewBox="0 0 100 100" fill="none" stroke="var(--secondary-text-color, #888)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="25" y="20" width="50" height="60" rx="8"/>
+      <rect x="32" y="28" width="36" height="22" rx="3"/>
+      <circle cx="37" cy="68" r="5"/>
+      <circle cx="63" cy="68" r="5"/>
+      <line x1="50" y1="20" x2="50" y2="8"/>
+      <line x1="35" y1="8" x2="65" y2="8"/>
+      <line x1="30" y1="80" x2="22" y2="92"/>
+      <line x1="70" y1="80" x2="78" y2="92"/>
+    </svg>`;
+  }
+
+  static getStubConfig() {
+    return {
+      entity: "sensor.118208_departures",
+      lines: ["707", "705"],
+      platform: "1",
+      max: 2,
+    };
+  }
+}
+
+customElements.define("tram-card", TramCard);
+
+window.customCards.push({
+  type: "tram-card",
+  name: "Tram Card",
+  description: "Nächste Straßenbahn-Abfahrten",
+});

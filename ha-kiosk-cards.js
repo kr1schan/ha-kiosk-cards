@@ -340,8 +340,8 @@ class SchoolDayCard extends HTMLElement {
       const days = this._daysBetween(today, nextSchool) - 1;
       return {
         type: "ferien",
-        status: "Ferien",
-        detail: holiday,
+        status: holiday,
+        detail: "",
         countdown: days <= 1 ? "Morgen wieder Schule" : `Noch ${days} Tage Ferien`,
       };
     }
@@ -352,8 +352,8 @@ class SchoolDayCard extends HTMLElement {
       const days = this._daysBetween(today, nextSchool) - 1;
       return {
         type: "feiertag",
-        status: "Feiertag",
-        detail: publicHoliday,
+        status: publicHoliday,
+        detail: "",
         countdown: days <= 1 ? "Morgen wieder Schule" : `Noch ${days} Tage frei`,
       };
     }
@@ -372,8 +372,8 @@ class SchoolDayCard extends HTMLElement {
         const days = this._daysBetween(today, nextSchool) - 1;
         return {
           type: "ferien",
-          status: "Ferien",
-          detail: adjacentHoliday,
+          status: adjacentHoliday,
+          detail: "",
           countdown: days <= 1 ? "Morgen wieder Schule" : `Noch ${days} Tage Ferien`,
         };
       }

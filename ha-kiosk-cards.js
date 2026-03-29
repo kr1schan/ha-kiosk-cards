@@ -1005,6 +1005,7 @@ class TramCard extends HTMLElement {
       lines: config.lines || ["707", "705"],
       platform: config.platform || "1",
       max: config.max || 2,
+      stop: config.stop || "Johannstraße",
     };
   }
 
@@ -1066,18 +1067,21 @@ class TramCard extends HTMLElement {
         .minutes {
           font-size: 36px;
           font-weight: 200;
-          color: var(--primary-text-color, #e1e1e1);
           white-space: nowrap;
+        }
+
+        .minutes.on-time {
+          color: #2ECC71;
+        }
+
+        .minutes.delayed {
+          color: #E04040;
         }
 
         .minutes .unit {
           font-size: 20px;
           font-weight: 300;
-          color: var(--secondary-text-color, #888);
-        }
-
-        .delay {
-          color: #E04040;
+          opacity: 0.7;
         }
 
         .empty {
@@ -1085,11 +1089,25 @@ class TramCard extends HTMLElement {
           font-weight: 300;
           color: var(--disabled-text-color, #555);
         }
+
+        .stop-name {
+          font-size: 22px;
+          font-weight: 400;
+          letter-spacing: 4px;
+          text-transform: uppercase;
+          color: var(--disabled-text-color, #555);
+          width: 100%;
+          text-align: center;
+          margin-bottom: 12px;
+        }
       </style>
 
       <ha-card>
         <div class="tram-icon">${this._tramSvg()}</div>
-        <div class="departures" id="deps"></div>
+        <div class="departures">
+          <div class="stop-name">${this._config.stop || "Johannstraße"}</div>
+          <div id="deps"></div>
+        </div>
       </ha-card>
     `;
 
@@ -1135,12 +1153,13 @@ class TramCard extends HTMLElement {
 
     container.innerHTML = deps
       .map((d) => {
-        const delayStr = d.delay > 0 ? ` <span class="delay">+${d.delay}</span>` : "";
+        const cls = d.delay > 0 ? "delayed" : "on-time";
+        const delayStr = d.delay > 0 ? ` +${d.delay}` : "";
         return `
           <div class="departure">
             <span class="line">${d.line}</span>
             <span class="dest">${d.destination}</span>
-            <span class="minutes">${d.mins}${delayStr} <span class="unit">min</span></span>
+            <span class="minutes ${cls}">${d.mins}${delayStr} <span class="unit">min</span></span>
           </div>
         `;
       })

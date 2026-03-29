@@ -793,7 +793,7 @@ const POLLEN_LEVELS = {
 };
 
 const POLLEN_COLORS = {
-  "0": "#555",
+  "0": "#2ECC71",
   "0.5": "#6B9BD2",
   "1": "#4FC1A6",
   "1.5": "#B8CC3C",

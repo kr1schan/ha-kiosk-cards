@@ -1090,24 +1090,11 @@ class TramCard extends HTMLElement {
           color: var(--disabled-text-color, #555);
         }
 
-        .stop-name {
-          font-size: 22px;
-          font-weight: 400;
-          letter-spacing: 4px;
-          text-transform: uppercase;
-          color: var(--disabled-text-color, #555);
-          width: 100%;
-          text-align: center;
-          margin-bottom: 12px;
-        }
       </style>
 
       <ha-card>
         <div class="tram-icon">${this._tramSvg()}</div>
-        <div class="departures">
-          <div class="stop-name">${this._config.stop || "Johannstraße"}</div>
-          <div id="deps"></div>
-        </div>
+        <div class="departures" id="deps"></div>
       </ha-card>
     `;
 
@@ -1157,8 +1144,7 @@ class TramCard extends HTMLElement {
         const delayStr = d.delay > 0 ? ` +${d.delay}` : "";
         return `
           <div class="departure">
-            <span class="line">${d.line}</span>
-            <span class="dest">${d.destination}</span>
+            <span class="line">${d.line} → 🏙️</span>
             <span class="minutes ${cls}">${d.mins}${delayStr} <span class="unit">min</span></span>
           </div>
         `;

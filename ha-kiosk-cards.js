@@ -1119,7 +1119,10 @@ class TramCard extends HTMLElement {
         const depTime = d.departure_timestamp ? d.departure_timestamp * 1000 : new Date(d.time).getTime();
         const mins = Math.max(0, Math.round((depTime - now) / 60000));
         const line = d.train.replace(/^Tra\s*/, "");
-        return { line, destination: d.destination, mins, delay: d.delay || 0 };
+        const rawDest = d.destination || "";
+        const afterComma = rawDest.includes(",") ? rawDest.split(",").pop().trim() : rawDest;
+        const shortDest = afterComma.split(" ")[0];
+        return { line, destination: shortDest, mins, delay: d.delay || 0 };
       })
       .filter((d) => d.mins >= 0)
       .slice(0, this._config.max);

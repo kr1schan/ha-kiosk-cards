@@ -695,40 +695,25 @@ class WeatherCard extends HTMLElement {
   async _loadForecast() {
     this._forecastLoaded = true;
     try {
-      const result = await this._hass.callWS({
+      const msg = {
         type: "weather/subscribe_forecast",
-        entity_id: this._config.entity,
         forecast_type: "daily",
-      });
-      if (result && result.forecast && result.forecast.length > 0) {
-        const today = result.forecast[0];
-        const low = Math.round(today.templow || today.temperature || 0);
-        const high = Math.round(today.temperature || 0);
-        if (this.shadowRoot?.querySelector(".forecast")) {
-          this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
-        }
-      }
-    } catch (e) {
-      // try service call fallback
-      try {
-        const result = await this._hass.callService("weather", "get_forecasts", {
-          entity_id: this._config.entity,
-          type: "daily",
-        }, {}, false, true);
-        if (result) {
-          const forecasts = result[this._config.entity]?.forecast;
-          if (forecasts && forecasts.length > 0) {
-            const today = forecasts[0];
-            const low = Math.round(today.templow || today.temperature || 0);
-            const high = Math.round(today.temperature || 0);
-            if (this.shadowRoot?.querySelector(".forecast")) {
-              this.shadowRoot.querySelector(".forecast").textContent = `${low}° / ${high}°`;
-            }
+        entity_id: this._config.entity,
+      };
+      this._hass.connection.subscribeMessage(
+        (result) => {
+          if (result?.forecast && result.forecast.length > 0) {
+            const today = result.forecast[0];
+            const low = Math.round(today.templow ?? today.temperature ?? 0);
+            const high = Math.round(today.temperature ?? 0);
+            const el = this.shadowRoot?.querySelector(".forecast");
+            if (el) el.textContent = `${low}° / ${high}°`;
           }
-        }
-      } catch (e2) {
-        // forecast not available
-      }
+        },
+        msg,
+      );
+    } catch (e) {
+      // forecast not available
     }
   }
 

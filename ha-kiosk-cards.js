@@ -823,10 +823,11 @@ class PollenCard extends HTMLElement {
       <style>
         ha-card {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
           align-items: center;
           justify-content: center;
-          padding: 8px 20px;
+          gap: 32px;
+          padding: 16px 20px;
           background: var(--card-background-color, var(--primary-background-color, #111));
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
@@ -834,63 +835,43 @@ class PollenCard extends HTMLElement {
           -webkit-user-select: none;
         }
 
-        .title {
-          font-size: 22px;
-          font-weight: 400;
-          letter-spacing: 4px;
-          text-transform: uppercase;
-          color: var(--disabled-text-color, #555);
-          margin-bottom: 16px;
+        .item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
         }
 
-        .row {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          width: 100%;
-          margin: 6px 0;
+        .icon svg {
+          width: 80px;
+          height: 80px;
         }
 
         .label {
-          font-size: 28px;
-          font-weight: 300;
-          color: var(--primary-text-color, #e1e1e1);
+          font-size: 20px;
+          font-weight: 400;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          color: var(--disabled-text-color, #555);
         }
 
         .level {
-          font-size: 24px;
-          font-weight: 400;
-        }
-
-        .bar-bg {
-          width: 100%;
-          height: 4px;
-          background: var(--divider-color, #333);
-          border-radius: 2px;
-          margin-top: 4px;
-          margin-bottom: 12px;
-        }
-
-        .bar {
-          height: 100%;
-          border-radius: 2px;
-          transition: width 0.5s ease;
+          font-size: 22px;
+          font-weight: 300;
         }
       </style>
 
       <ha-card>
-        <div class="title">Pollenflug</div>
-        <div class="row">
+        <div class="item">
+          <div class="icon" id="trees-icon"></div>
           <span class="label">Bäume</span>
           <span class="level" id="trees-level">--</span>
         </div>
-        <div class="bar-bg"><div class="bar" id="trees-bar"></div></div>
-        <div class="row">
+        <div class="item">
+          <div class="icon" id="grass-icon"></div>
           <span class="label">Gräser</span>
           <span class="level" id="grass-level">--</span>
         </div>
-        <div class="bar-bg"><div class="bar" id="grass-bar"></div></div>
       </ha-card>
     `;
 
@@ -930,19 +911,39 @@ class PollenCard extends HTMLElement {
     const key = String(value);
     const label = POLLEN_LEVELS[key] || POLLEN_LEVELS[String(Math.round(value))] || "Unbekannt";
     const color = POLLEN_COLORS[key] || POLLEN_COLORS[String(Math.round(value))] || "#555";
-    const pct = Math.round((value / 3) * 100);
 
     const levelEl = this.shadowRoot.querySelector(`#${id}-level`);
-    const barEl = this.shadowRoot.querySelector(`#${id}-bar`);
+    const iconEl = this.shadowRoot.querySelector(`#${id}-icon`);
 
     if (levelEl) {
       levelEl.textContent = label;
       levelEl.style.color = color;
     }
-    if (barEl) {
-      barEl.style.width = `${pct}%`;
-      barEl.style.background = color;
+    if (iconEl) {
+      iconEl.innerHTML = id === "trees" ? this._treeSvg(color) : this._grassSvg(color);
     }
+  }
+
+  _treeSvg(color) {
+    return `<svg viewBox="0 0 100 100" fill="${color}" stroke="none">
+      <ellipse cx="50" cy="35" rx="30" ry="28" opacity="0.8"/>
+      <ellipse cx="35" cy="45" rx="20" ry="18" opacity="0.6"/>
+      <ellipse cx="65" cy="45" rx="20" ry="18" opacity="0.6"/>
+      <rect x="46" y="60" width="8" height="30" rx="2" opacity="0.5"/>
+    </svg>`;
+  }
+
+  _grassSvg(color) {
+    return `<svg viewBox="0 0 100 100" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round">
+      <path d="M20 95 Q22 60 35 40" opacity="0.7"/>
+      <path d="M35 95 Q34 55 28 30" opacity="0.8"/>
+      <path d="M50 95 Q50 50 50 20" opacity="0.9"/>
+      <path d="M65 95 Q66 55 72 30" opacity="0.8"/>
+      <path d="M80 95 Q78 60 65 40" opacity="0.7"/>
+      <circle cx="28" cy="28" r="4" fill="${color}" opacity="0.6"/>
+      <circle cx="50" cy="18" r="4" fill="${color}" opacity="0.6"/>
+      <circle cx="72" cy="28" r="4" fill="${color}" opacity="0.6"/>
+    </svg>`;
   }
 
   static getStubConfig() {

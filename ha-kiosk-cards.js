@@ -776,3 +776,192 @@ window.customCards.push({
   name: "Weather Card",
   description: "Aktuelles Wetter und Tagesvorhersage",
 });
+
+
+// ═══════════════════════════════════════════
+// pollen-card
+// ═══════════════════════════════════════════
+
+const POLLEN_LEVELS = {
+  "0": "Keine",
+  "0.5": "Keine bis gering",
+  "1": "Gering",
+  "1.5": "Gering bis mittel",
+  "2": "Mittel",
+  "2.5": "Mittel bis hoch",
+  "3": "Hoch",
+};
+
+const POLLEN_COLORS = {
+  "0": "#555",
+  "0.5": "#6B9BD2",
+  "1": "#4FC1A6",
+  "1.5": "#B8CC3C",
+  "2": "#F2A63B",
+  "2.5": "#E8723A",
+  "3": "#E04040",
+};
+
+class PollenCard extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._config = {};
+  }
+
+  setConfig(config) {
+    this._config = config;
+  }
+
+  set hass(hass) {
+    this._hass = hass;
+    this._update();
+  }
+
+  connectedCallback() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        ha-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 8px 20px;
+          background: var(--card-background-color, var(--primary-background-color, #111));
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          overflow: hidden;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+
+        .title {
+          font-size: 22px;
+          font-weight: 400;
+          letter-spacing: 4px;
+          text-transform: uppercase;
+          color: var(--disabled-text-color, #555);
+          margin-bottom: 16px;
+        }
+
+        .row {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          margin: 6px 0;
+        }
+
+        .label {
+          font-size: 28px;
+          font-weight: 300;
+          color: var(--primary-text-color, #e1e1e1);
+        }
+
+        .level {
+          font-size: 24px;
+          font-weight: 400;
+        }
+
+        .bar-bg {
+          width: 100%;
+          height: 4px;
+          background: var(--divider-color, #333);
+          border-radius: 2px;
+          margin-top: 4px;
+          margin-bottom: 12px;
+        }
+
+        .bar {
+          height: 100%;
+          border-radius: 2px;
+          transition: width 0.5s ease;
+        }
+      </style>
+
+      <ha-card>
+        <div class="title">Pollenflug</div>
+        <div class="row">
+          <span class="label">Bäume</span>
+          <span class="level" id="trees-level">--</span>
+        </div>
+        <div class="bar-bg"><div class="bar" id="trees-bar"></div></div>
+        <div class="row">
+          <span class="label">Gräser</span>
+          <span class="level" id="grass-level">--</span>
+        </div>
+        <div class="bar-bg"><div class="bar" id="grass-bar"></div></div>
+      </ha-card>
+    `;
+
+    if (this._hass) this._update();
+  }
+
+  _update() {
+    if (!this.shadowRoot?.querySelector("#trees-level") || !this._hass) return;
+
+    const cfg = this._config;
+    const trees = cfg.trees || [
+      "sensor.pollenflug_birke_41",
+      "sensor.pollenflug_erle_41",
+      "sensor.pollenflug_esche_41",
+      "sensor.pollenflug_hasel_41",
+    ];
+    const grass = cfg.grass || "sensor.pollenflug_graeser_41";
+
+    // Höchster Wert der Bäume
+    let maxTree = 0;
+    for (const id of trees) {
+      const e = this._hass.states[id];
+      if (e) {
+        const v = parseFloat(e.state);
+        if (!isNaN(v) && v > maxTree) maxTree = v;
+      }
+    }
+
+    const grassEntity = this._hass.states[grass];
+    const grassVal = grassEntity ? parseFloat(grassEntity.state) : 0;
+
+    this._renderLevel("trees", maxTree);
+    this._renderLevel("grass", isNaN(grassVal) ? 0 : grassVal);
+  }
+
+  _renderLevel(id, value) {
+    const key = String(value);
+    const label = POLLEN_LEVELS[key] || POLLEN_LEVELS[String(Math.round(value))] || "Unbekannt";
+    const color = POLLEN_COLORS[key] || POLLEN_COLORS[String(Math.round(value))] || "#555";
+    const pct = Math.round((value / 3) * 100);
+
+    const levelEl = this.shadowRoot.querySelector(`#${id}-level`);
+    const barEl = this.shadowRoot.querySelector(`#${id}-bar`);
+
+    if (levelEl) {
+      levelEl.textContent = label;
+      levelEl.style.color = color;
+    }
+    if (barEl) {
+      barEl.style.width = `${pct}%`;
+      barEl.style.background = color;
+    }
+  }
+
+  static getStubConfig() {
+    return {
+      trees: [
+        "sensor.pollenflug_birke_41",
+        "sensor.pollenflug_erle_41",
+        "sensor.pollenflug_esche_41",
+        "sensor.pollenflug_hasel_41",
+      ],
+      grass: "sensor.pollenflug_graeser_41",
+    };
+  }
+}
+
+customElements.define("pollen-card", PollenCard);
+
+window.customCards.push({
+  type: "pollen-card",
+  name: "Pollen Card",
+  description: "Pollenbelastung Bäume und Gräser",
+});

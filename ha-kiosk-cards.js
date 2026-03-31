@@ -1020,8 +1020,8 @@ class TramCard extends HTMLElement {
         }
 
         .tram-icon img {
-          width: 80px;
-          height: 80px;
+          width: 120px;
+          height: 120px;
         }
 
         .departures {

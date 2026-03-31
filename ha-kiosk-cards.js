@@ -1118,7 +1118,7 @@ class TramCard extends HTMLElement {
         const line = d.train.replace(/^Tra\s*/, "");
         return { line, mins, delay: d.delay || 0 };
       })
-      .filter((d) => d.mins >= 0 && d.mins <= maxMins);
+      .filter((d) => d.mins > 0 && d.mins <= maxMins);
 
     // Pro Linie: nächste N innerhalb maxMins, falls keine dann nächste N überhaupt
     const allDepsNoLimit = entity.attributes.next_departures
@@ -1133,7 +1133,7 @@ class TramCard extends HTMLElement {
         const line = d.train.replace(/^Tra\s*/, "");
         return { line, mins, delay: d.delay || 0 };
       })
-      .filter((d) => d.mins >= 0);
+      .filter((d) => d.mins > 0);
 
     const deps = [];
     for (const l of this._config.lines) {

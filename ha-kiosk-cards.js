@@ -1102,7 +1102,10 @@ class TramCard extends HTMLElement {
     if (!entity || !entity.attributes.next_departures) return;
 
     const now = Date.now();
-    const deps = entity.attributes.next_departures
+    const maxMins = this._config.maxMinutes || 30;
+    const perLine = this._config.max || 2;
+
+    const allDeps = entity.attributes.next_departures
       .filter((d) => {
         const lineMatch = this._config.lines.some((l) => d.train && d.train.includes(l));
         const platMatch = !this._config.platform || d.platform === this._config.platform;
@@ -1113,13 +1116,34 @@ class TramCard extends HTMLElement {
         const depTime = d.departure_timestamp ? d.departure_timestamp * 1000 : new Date(d.time).getTime();
         const mins = Math.max(0, Math.round((depTime - now) / 60000));
         const line = d.train.replace(/^Tra\s*/, "");
-        const rawDest = d.destination || "";
-        const afterComma = rawDest.includes(",") ? rawDest.split(",").pop().trim() : rawDest;
-        const shortDest = afterComma.split(" ")[0];
-        return { line, destination: shortDest, mins, delay: d.delay || 0 };
+        return { line, mins, delay: d.delay || 0 };
       })
-      .filter((d) => d.mins >= 0)
-      .slice(0, this._config.max);
+      .filter((d) => d.mins >= 0 && d.mins <= maxMins);
+
+    // Pro Linie: nächste N innerhalb maxMins, falls keine dann nächste N überhaupt
+    const allDepsNoLimit = entity.attributes.next_departures
+      .filter((d) => {
+        const lineMatch = this._config.lines.some((l) => d.train && d.train.includes(l));
+        const platMatch = !this._config.platform || d.platform === this._config.platform;
+        return lineMatch && platMatch && !d.is_cancelled;
+      })
+      .map((d) => {
+        const depTime = d.departure_timestamp ? d.departure_timestamp * 1000 : new Date(d.time).getTime();
+        const mins = Math.max(0, Math.round((depTime - now) / 60000));
+        const line = d.train.replace(/^Tra\s*/, "");
+        return { line, mins, delay: d.delay || 0 };
+      })
+      .filter((d) => d.mins >= 0);
+
+    const deps = [];
+    for (const l of this._config.lines) {
+      let lineDeps = allDeps.filter((d) => d.line.includes(l)).slice(0, perLine);
+      if (lineDeps.length === 0) {
+        lineDeps = allDepsNoLimit.filter((d) => d.line.includes(l)).slice(0, perLine);
+      }
+      deps.push(...lineDeps);
+    }
+    deps.sort((a, b) => a.mins - b.mins);
 
     const container = this.shadowRoot.querySelector("#deps");
     if (deps.length === 0) {

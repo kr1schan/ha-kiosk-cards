@@ -1105,10 +1105,11 @@ class TramCard extends HTMLElement {
     const maxMins = this._config.maxMinutes || 30;
     const perLine = this._config.max || 2;
 
-    // Unterstütze beide Formate: altes (train) und neues (line/countdown)
+    // Immer selbst berechnen, countdown ist nur ein Snapshot vom letzten Update
     const parseDep = (d) => {
       const line = d.line || (d.train ? d.train.replace(/^Tra\s*/, "") : "");
-      const mins = d.countdown != null ? parseInt(d.countdown) : Math.max(0, Math.round(((d.departure_timestamp ? d.departure_timestamp * 1000 : new Date(d.time).getTime()) - now) / 60000));
+      const depTime = (d.rt_datetime || d.departure_timestamp || d.datetime) * 1000 || new Date(d.time).getTime();
+      const mins = Math.max(0, Math.round((depTime - now) / 60000));
       const delay = parseInt(d.delay) || 0;
       return { line, mins, delay };
     };

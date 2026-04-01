@@ -1025,6 +1025,13 @@ class TramCard extends HTMLElement {
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .dep-table {
+          display: inline-flex;
+          flex-direction: column;
           gap: 8px;
         }
 
@@ -1033,6 +1040,7 @@ class TramCard extends HTMLElement {
           flex-direction: row;
           align-items: baseline;
           gap: 12px;
+          justify-content: flex-end;
         }
 
         .line {
@@ -1040,10 +1048,13 @@ class TramCard extends HTMLElement {
           font-weight: 400;
           color: var(--secondary-text-color, #888);
           min-width: 40px;
+          text-align: right;
         }
 
         .minutes {
           font-size: clamp(16px, 10cqi, 42px);
+          min-width: 60px;
+          text-align: right;
           font-weight: 200;
           white-space: nowrap;
         }
@@ -1130,7 +1141,7 @@ class TramCard extends HTMLElement {
       return;
     }
 
-    container.innerHTML = deps
+    container.innerHTML = `<div class="dep-table">${deps
       .map((d) => {
         const cls = d.delay > 0 ? "delayed" : "on-time";
         return `
@@ -1140,7 +1151,7 @@ class TramCard extends HTMLElement {
           </div>
         `;
       })
-      .join("");
+      .join("")}</div>`;
   }
 
   _tramSvg() {

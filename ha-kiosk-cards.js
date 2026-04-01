@@ -240,7 +240,7 @@ class SchoolDayCard extends HTMLElement {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-left: 8px;
+          margin-left: 20px;
         }
 
         .icon img {
@@ -1032,19 +1032,19 @@ class TramCard extends HTMLElement {
         .dep-table {
           display: grid;
           grid-template-columns: auto auto auto;
-          gap: 4px 8px;
+          gap: 4px 16px;
           align-items: baseline;
         }
 
         .line {
-          font-size: clamp(12px, 7cqi, 28px);
+          font-size: clamp(16px, 10cqi, 42px);
           font-weight: 400;
           color: var(--secondary-text-color, #888);
           text-align: right;
         }
 
         .mins-val {
-          font-size: clamp(16px, 10cqi, 42px);
+          font-size: clamp(20px, 14cqi, 56px);
           text-align: right;
           font-weight: 200;
           white-space: nowrap;

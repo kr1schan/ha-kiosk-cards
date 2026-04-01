@@ -216,6 +216,7 @@ class SchoolDayCard extends HTMLElement {
           display: flex;
           flex-direction: row;
           align-items: center;
+          gap: 12px;
           padding: 12px 16px;
           background: var(--card-background-color, var(--primary-background-color, #111));
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

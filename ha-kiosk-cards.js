@@ -233,7 +233,7 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .icon {
-          width: 80px;
+          width: 150px;
           flex-shrink: 0;
           display: flex;
           align-items: center;
@@ -242,13 +242,13 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .icon img {
-          width: 80px;
-          height: 80px;
+          width: 150px;
+          height: 150px;
           object-fit: contain;
         }
 
         .countdown {
-          font-size: clamp(14px, 4vw, 48px);
+          font-size: clamp(14px, 3vw, 28px);
           font-weight: 400;
           letter-spacing: 2px;
           text-transform: uppercase;
@@ -259,7 +259,7 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .status {
-          font-size: clamp(20px, 6vw, 72px);
+          font-size: clamp(20px, 5vw, 42px);
           font-weight: 200;
           letter-spacing: 1px;
           color: var(--primary-text-color, #e1e1e1);

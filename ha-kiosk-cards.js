@@ -214,61 +214,67 @@ class SchoolDayCard extends HTMLElement {
       <style>
         ha-card {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
           align-items: center;
-          justify-content: center;
-          padding: 8px 0;
+          padding: 12px 16px;
           background: var(--card-background-color, var(--primary-background-color, #111));
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
           user-select: none;
           -webkit-user-select: none;
-          position: relative;
         }
 
-        .bg {
-          position: absolute;
-          top: 0;
-          right: 10px;
-          bottom: 0;
+        .text {
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          min-width: 0;
+        }
+
+        .icon {
+          flex: 1;
           display: flex;
           align-items: center;
-          opacity: 0.25;
-          pointer-events: none;
+          justify-content: center;
         }
 
-        .bg svg, .bg img {
-          height: 200px;
-          width: 200px;
+        .icon img {
+          width: 100%;
+          height: auto;
           object-fit: contain;
         }
 
         .countdown {
-          font-size: 22px;
+          font-size: clamp(14px, 4vw, 22px);
           font-weight: 400;
           letter-spacing: 2px;
           text-transform: uppercase;
           color: var(--disabled-text-color, #555);
-          position: relative;
-          z-index: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .status {
-          font-size: 36px;
+          font-size: clamp(20px, 6vw, 36px);
           font-weight: 200;
           letter-spacing: 2px;
           text-transform: uppercase;
           color: var(--primary-text-color, #e1e1e1);
           margin-top: 4px;
-          position: relative;
-          z-index: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       </style>
 
       <ha-card>
-        <div class="bg"></div>
-        <div class="countdown"></div>
-        <div class="status"></div>
+        <div class="text">
+          <div class="countdown"></div>
+          <div class="status"></div>
+        </div>
+        <div class="icon"></div>
       </ha-card>
     `;
 
@@ -287,7 +293,7 @@ class SchoolDayCard extends HTMLElement {
 
     this.shadowRoot.querySelector(".countdown").textContent = info.countdown;
     this.shadowRoot.querySelector(".status").textContent = info.status;
-    this.shadowRoot.querySelector(".bg").innerHTML = this._getSvg(info.type);
+    this.shadowRoot.querySelector(".icon").innerHTML = this._getSvg(info.type);
   }
 
   _getSvg(type) {
@@ -599,7 +605,6 @@ class WeatherCard extends HTMLElement {
           bottom: 0;
           display: flex;
           align-items: center;
-          opacity: 0.25;
           pointer-events: none;
         }
 

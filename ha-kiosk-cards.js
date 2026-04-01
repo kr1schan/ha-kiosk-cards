@@ -996,8 +996,8 @@ class TramCard extends HTMLElement {
           display: flex;
           flex-direction: row;
           align-items: center;
-          padding: 16px 20px;
-          gap: 20px;
+          padding: 12px 16px;
+          container-type: inline-size;
           background: var(--card-background-color, var(--primary-background-color, #111));
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
@@ -1005,15 +1005,26 @@ class TramCard extends HTMLElement {
           -webkit-user-select: none;
         }
 
+        .tram-icon {
+          width: 120px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 8px;
+        }
+
         .tram-icon img {
           width: 120px;
           height: 120px;
+          object-fit: contain;
         }
 
         .departures {
+          flex: 1;
           display: flex;
           flex-direction: column;
-          flex: 1;
+          align-items: center;
           gap: 8px;
         }
 
@@ -1025,21 +1036,14 @@ class TramCard extends HTMLElement {
         }
 
         .line {
-          font-size: 24px;
+          font-size: clamp(12px, 7cqi, 28px);
           font-weight: 400;
           color: var(--secondary-text-color, #888);
-          min-width: 50px;
-        }
-
-        .dest {
-          font-size: 20px;
-          font-weight: 300;
-          color: var(--disabled-text-color, #555);
-          flex: 1;
+          min-width: 40px;
         }
 
         .minutes {
-          font-size: 36px;
+          font-size: clamp(16px, 10cqi, 42px);
           font-weight: 200;
           white-space: nowrap;
         }
@@ -1053,13 +1057,13 @@ class TramCard extends HTMLElement {
         }
 
         .minutes .unit {
-          font-size: 20px;
+          font-size: clamp(10px, 5cqi, 22px);
           font-weight: 300;
           opacity: 0.7;
         }
 
         .empty {
-          font-size: 22px;
+          font-size: clamp(12px, 7cqi, 22px);
           font-weight: 300;
           color: var(--disabled-text-color, #555);
         }

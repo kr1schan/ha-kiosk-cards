@@ -1030,47 +1030,38 @@ class TramCard extends HTMLElement {
         }
 
         .dep-table {
-          display: inline-flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-
-        .departure {
-          display: flex;
-          flex-direction: row;
+          display: grid;
+          grid-template-columns: auto auto auto;
+          gap: 4px 8px;
           align-items: baseline;
-          gap: 12px;
-          justify-content: flex-end;
         }
 
         .line {
           font-size: clamp(12px, 7cqi, 28px);
           font-weight: 400;
           color: var(--secondary-text-color, #888);
-          min-width: 40px;
           text-align: right;
         }
 
-        .minutes {
+        .mins-val {
           font-size: clamp(16px, 10cqi, 42px);
-          min-width: 60px;
           text-align: right;
           font-weight: 200;
           white-space: nowrap;
         }
 
-        .minutes.on-time {
+        .mins-val.on-time {
           color: #2ECC71;
         }
 
-        .minutes.delayed {
+        .mins-val.delayed {
           color: #E04040;
         }
 
-        .minutes .unit {
+        .unit {
           font-size: clamp(10px, 5cqi, 22px);
           font-weight: 300;
-          opacity: 0.7;
+          color: var(--disabled-text-color, #555);
         }
 
         .empty {
@@ -1144,12 +1135,7 @@ class TramCard extends HTMLElement {
     container.innerHTML = `<div class="dep-table">${deps
       .map((d) => {
         const cls = d.delay > 0 ? "delayed" : "on-time";
-        return `
-          <div class="departure">
-            <span class="line">${d.line}</span>
-            <span class="minutes ${cls}">${d.mins} <span class="unit">min</span></span>
-          </div>
-        `;
+        return `<span class="line">${d.line}</span><span class="mins-val ${cls}">${d.mins}</span><span class="unit">min</span>`;
       })
       .join("")}</div>`;
   }

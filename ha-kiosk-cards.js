@@ -859,8 +859,9 @@ class PollenCard extends HTMLElement {
         }
 
         .level {
-          font-size: 22px;
+          font-size: 20px;
           font-weight: 300;
+          white-space: nowrap;
         }
       </style>
 

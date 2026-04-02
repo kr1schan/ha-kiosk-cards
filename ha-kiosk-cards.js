@@ -828,8 +828,8 @@ class PollenCard extends HTMLElement {
           flex-direction: row;
           align-items: center;
           justify-content: center;
-          gap: 32px;
-          padding: 16px 20px;
+          gap: 24px;
+          padding: 8px 16px;
           background: var(--card-background-color, var(--primary-background-color, #111));
           font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
           overflow: hidden;
@@ -841,12 +841,13 @@ class PollenCard extends HTMLElement {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 8px;
+          gap: 2px;
         }
 
-        .icon svg {
+        .icon img {
           width: 80px;
           height: 80px;
+          object-fit: contain;
         }
 
         .label {

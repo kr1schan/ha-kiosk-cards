@@ -549,8 +549,8 @@ class WeatherCard extends HTMLElement {
         }
 
         .bg svg, .bg img {
-          height: 200px;
-          width: 200px;
+          height: 150px;
+          width: 150px;
           object-fit: contain;
         }
 

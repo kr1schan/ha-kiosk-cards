@@ -845,8 +845,8 @@ class PollenCard extends HTMLElement {
         }
 
         .icon img {
-          width: 80px;
-          height: 80px;
+          width: 120px;
+          height: 120px;
           object-fit: contain;
         }
 

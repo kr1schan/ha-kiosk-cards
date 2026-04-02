@@ -250,7 +250,7 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .countdown {
-          font-size: clamp(14px, 5cqi, 48px);
+          font-size: clamp(14px, 6cqi, 48px);
           font-weight: 400;
           letter-spacing: 2px;
           text-transform: uppercase;
@@ -261,7 +261,7 @@ class SchoolDayCard extends HTMLElement {
         }
 
         .status {
-          font-size: clamp(18px, 7cqi, 72px);
+          font-size: clamp(18px, 9cqi, 72px);
           font-weight: 200;
           letter-spacing: 1px;
           color: var(--primary-text-color, #e1e1e1);
@@ -1037,14 +1037,14 @@ class TramCard extends HTMLElement {
         }
 
         .line {
-          font-size: clamp(20px, 14cqi, 56px);
+          font-size: clamp(18px, 10cqi, 48px);
           font-weight: 400;
           color: var(--secondary-text-color, #888);
           text-align: right;
         }
 
         .mins-val {
-          font-size: clamp(20px, 14cqi, 56px);
+          font-size: clamp(18px, 10cqi, 48px);
           text-align: right;
           font-weight: 200;
           white-space: nowrap;
@@ -1059,7 +1059,7 @@ class TramCard extends HTMLElement {
         }
 
         .unit {
-          font-size: clamp(14px, 8cqi, 36px);
+          font-size: clamp(12px, 6cqi, 28px);
           font-weight: 300;
           color: var(--disabled-text-color, #555);
         }

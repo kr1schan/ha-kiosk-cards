@@ -27,7 +27,7 @@ class ClockDateCard extends HTMLElement {
         }
 
         .weekday {
-          font-size: clamp(14px, 4.5cqi, 36px);
+          font-size: clamp(14px, 10cqi, 36px);
           font-weight: 400;
           letter-spacing: 6px;
           text-transform: uppercase;
@@ -43,7 +43,7 @@ class ClockDateCard extends HTMLElement {
           display: flex;
           flex-direction: row;
           align-items: center;
-          font-size: clamp(48px, 15cqi, 120px);
+          font-size: clamp(48px, 35cqi, 120px);
           font-weight: 100;
           line-height: 1;
           font-variant-numeric: tabular-nums;
@@ -61,7 +61,7 @@ class ClockDateCard extends HTMLElement {
         }
 
         .date {
-          font-size: clamp(14px, 4.5cqi, 36px);
+          font-size: clamp(14px, 10cqi, 36px);
           font-weight: 300;
           letter-spacing: 3px;
           color: var(--secondary-text-color, #888);
@@ -553,8 +553,8 @@ class WeatherCard extends HTMLElement {
         }
 
         .icon-area img {
-          height: clamp(80px, 20cqi, 150px);
-          width: clamp(80px, 20cqi, 150px);
+          height: clamp(80px, 45cqi, 150px);
+          width: clamp(80px, 45cqi, 150px);
           object-fit: contain;
         }
 
@@ -569,7 +569,7 @@ class WeatherCard extends HTMLElement {
         }
 
         .temp {
-          font-size: clamp(40px, 11cqi, 80px);
+          font-size: clamp(40px, 25cqi, 80px);
           font-weight: 100;
           color: var(--primary-text-color, #e1e1e1);
           line-height: 1;
@@ -577,7 +577,7 @@ class WeatherCard extends HTMLElement {
         }
 
         .condition {
-          font-size: clamp(12px, 4cqi, 28px);
+          font-size: clamp(12px, 9cqi, 28px);
           font-weight: 300;
           color: var(--secondary-text-color, #888);
           margin-top: 4px;
@@ -589,7 +589,7 @@ class WeatherCard extends HTMLElement {
         }
 
         .forecast {
-          font-size: clamp(11px, 3cqi, 22px);
+          font-size: clamp(11px, 7cqi, 22px);
           font-weight: 400;
           letter-spacing: 2px;
           color: var(--disabled-text-color, #555);
@@ -603,7 +603,7 @@ class WeatherCard extends HTMLElement {
         }
 
         .rain-alert {
-          font-size: clamp(11px, 2.8cqi, 20px);
+          font-size: clamp(11px, 6.5cqi, 20px);
           font-weight: 400;
           color: var(--secondary-text-color, #888);
           margin-top: 8px;

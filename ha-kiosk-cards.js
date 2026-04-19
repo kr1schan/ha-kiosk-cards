@@ -23,31 +23,37 @@ class ClockDateCard extends HTMLElement {
           overflow: hidden;
           user-select: none;
           -webkit-user-select: none;
+          container-type: inline-size;
         }
 
         .weekday {
-          font-size: 36px;
+          font-size: clamp(14px, 4.5cqi, 36px);
           font-weight: 400;
           letter-spacing: 6px;
           text-transform: uppercase;
           color: var(--disabled-text-color, #555);
           margin-bottom: 12px;
+          white-space: nowrap;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .time {
           display: flex;
           flex-direction: row;
           align-items: center;
-          font-size: 120px;
+          font-size: clamp(48px, 15cqi, 120px);
           font-weight: 100;
           line-height: 1;
           font-variant-numeric: tabular-nums;
           color: var(--primary-text-color, #e1e1e1);
           letter-spacing: -4px;
+          white-space: nowrap;
         }
 
         .colon {
-          font-size: 120px;
+          font-size: inherit;
           margin: 0 4px;
           color: var(--divider-color, #444);
           line-height: 1;
@@ -55,12 +61,16 @@ class ClockDateCard extends HTMLElement {
         }
 
         .date {
-          font-size: 36px;
+          font-size: clamp(14px, 4.5cqi, 36px);
           font-weight: 300;
           letter-spacing: 3px;
           color: var(--secondary-text-color, #888);
           text-transform: uppercase;
           margin-top: 12px;
+          white-space: nowrap;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       </style>
 
@@ -532,6 +542,7 @@ class WeatherCard extends HTMLElement {
           overflow: hidden;
           user-select: none;
           -webkit-user-select: none;
+          container-type: inline-size;
         }
 
         .icon-area {
@@ -542,8 +553,8 @@ class WeatherCard extends HTMLElement {
         }
 
         .icon-area img {
-          height: 150px;
-          width: 150px;
+          height: clamp(80px, 20cqi, 150px);
+          width: clamp(80px, 20cqi, 150px);
           object-fit: contain;
         }
 
@@ -553,36 +564,54 @@ class WeatherCard extends HTMLElement {
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          min-width: 0;
+          padding: 0 8px;
         }
 
         .temp {
-          font-size: 80px;
+          font-size: clamp(40px, 11cqi, 80px);
           font-weight: 100;
           color: var(--primary-text-color, #e1e1e1);
           line-height: 1;
+          white-space: nowrap;
         }
 
         .condition {
-          font-size: 28px;
+          font-size: clamp(12px, 4cqi, 28px);
           font-weight: 300;
           color: var(--secondary-text-color, #888);
           margin-top: 4px;
+          white-space: nowrap;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
         }
 
         .forecast {
-          font-size: 22px;
+          font-size: clamp(11px, 3cqi, 22px);
           font-weight: 400;
           letter-spacing: 2px;
           color: var(--disabled-text-color, #555);
           margin-top: 12px;
           text-transform: uppercase;
+          white-space: nowrap;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
         }
 
         .rain-alert {
-          font-size: 20px;
+          font-size: clamp(11px, 2.8cqi, 20px);
           font-weight: 400;
           color: var(--secondary-text-color, #888);
           margin-top: 8px;
+          white-space: nowrap;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
         }
       </style>
 
@@ -998,14 +1027,14 @@ class TramCard extends HTMLElement {
         }
 
         .line {
-          font-size: clamp(18px, 10cqi, 48px);
+          font-size: clamp(20px, 14cqi, 56px);
           font-weight: 400;
           color: var(--secondary-text-color, #888);
           text-align: right;
         }
 
         .mins-val {
-          font-size: clamp(18px, 10cqi, 48px);
+          font-size: clamp(20px, 14cqi, 56px);
           text-align: right;
           font-weight: 200;
           white-space: nowrap;
@@ -1020,7 +1049,7 @@ class TramCard extends HTMLElement {
         }
 
         .unit {
-          font-size: clamp(12px, 6cqi, 28px);
+          font-size: clamp(14px, 8cqi, 36px);
           font-weight: 300;
           color: var(--disabled-text-color, #555);
         }

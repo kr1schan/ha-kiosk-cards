@@ -553,13 +553,13 @@ class WeatherCard extends HTMLElement {
         }
 
         .icon-area img {
-          height: clamp(80px, 45cqi, 220px);
-          width: clamp(80px, 45cqi, 220px);
+          height: clamp(80px, 38cqi, 220px);
+          width: clamp(80px, 38cqi, 220px);
           object-fit: contain;
         }
 
         .text-area {
-          flex: 1;
+          flex: 2;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -570,7 +570,7 @@ class WeatherCard extends HTMLElement {
         }
 
         .temp {
-          font-size: clamp(40px, 28cqi, 140px);
+          font-size: clamp(48px, 32cqi, 180px);
           font-weight: 100;
           color: var(--primary-text-color, #e1e1e1);
           line-height: 1;
@@ -578,7 +578,7 @@ class WeatherCard extends HTMLElement {
         }
 
         .condition {
-          font-size: clamp(14px, 9cqi, 44px);
+          font-size: clamp(16px, 11cqi, 56px);
           font-weight: 300;
           color: var(--secondary-text-color, #888);
           margin-top: 4px;
@@ -590,7 +590,7 @@ class WeatherCard extends HTMLElement {
         }
 
         .forecast {
-          font-size: clamp(12px, 7cqi, 34px);
+          font-size: clamp(14px, 8cqi, 42px);
           font-weight: 400;
           letter-spacing: 2px;
           color: var(--disabled-text-color, #555);
@@ -604,7 +604,7 @@ class WeatherCard extends HTMLElement {
         }
 
         .rain-alert {
-          font-size: clamp(12px, 6.5cqi, 30px);
+          font-size: clamp(13px, 7.5cqi, 38px);
           font-weight: 400;
           color: var(--secondary-text-color, #888);
           margin-top: 8px;
